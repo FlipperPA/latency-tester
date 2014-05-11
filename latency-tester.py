@@ -13,12 +13,15 @@ threshold = 100
 # WHO SHOULD WE RUN THE PING TEST AGAINST
 ping_destination = 'www.google.com'
 
+def write_to_file(file_to_write, message):
+    fh = open(file_to_write, 'a')
+    fh.write(message)
+    fh.close()
+
 count = 0
 line = 'Ping Interval: ' + str(interval) + ', Destination: ' + ping_destination + ', Threshold to Log (msec): ' + str(threshold) + '\n'
 
-fh = open(log_file, 'w+')
-fh.write(line)
-fh.close()
+write_to_file(log_file, line)
          
 ping_command = 'ping -i ' + str(interval) + ' ' + ping_destination
 print line
@@ -28,7 +31,13 @@ child = pexpect.spawn(ping_command, timeout=(interval + 120))
 while 1:
     count += 1
     line = child.readline()
-    if not line: break
+    if not line:
+        break
+
+    if line.startswith('ping: unknown host'):
+        print 'Unknown host: ' + ping_destination
+        write_to_file(log_file, 'Unknown host: ' + ping_destination)
+        break
 
     if count > 1:
         ping_time = float(line[line.find('time=') + 5:line.find(' ms')])
@@ -36,6 +45,4 @@ while 1:
         print line
 
         if ping_time > threshold:
-            fh = open(log_file, 'a')
-            fh.write(line + '\n')
-            fh.close()
+            write_to_file(log_file, line + '\n')
