@@ -1,10 +1,11 @@
-import pexpect, time, sys
+import sys, pexpect, time, datetime
 
 # SET YOUR PING INTERVAL HERE, IN SECONDS
 interval = 5
 
 # LOG TO WRITE TO WHEN PINGS TAKE LONGER THAN THE THRESHOLD SET ABOVE
-log_file = 'latency-tester.log'
+i = datetime.datetime.now()
+log_file = 'latency-tester.' + i.strftime('%Y.%m.%d.%H.%M.%S') + '.log'
 
 # SET YOUR PING RESPONSE TIME THRESHOLD HERE, IN MILLISECONDS
 threshold = 100
@@ -22,7 +23,7 @@ fh.close()
 ping_command = 'ping -i ' + str(interval) + ' ' + ping_destination
 print line
 
-child = pexpect.spawn(ping_command, timeout=(interval + 30))
+child = pexpect.spawn(ping_command, timeout=(interval + 120))
 
 while 1:
     count += 1
