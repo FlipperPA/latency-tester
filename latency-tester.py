@@ -8,7 +8,7 @@ i = datetime.datetime.now()
 log_file = 'latency-tester.' + i.strftime('%Y.%m.%d.%H.%M.%S') + '.log'
 
 # SET YOUR PING RESPONSE TIME THRESHOLD HERE, IN MILLISECONDS
-threshold = 100
+threshold = 250
 
 # WHO SHOULD WE RUN THE PING TEST AGAINST
 ping_destination = 'www.google.com'
@@ -26,10 +26,10 @@ write_to_file(log_file, line)
 ping_command = 'ping -i ' + str(interval) + ' ' + ping_destination
 print line
 
-child = pexpect.spawn(ping_command, timeout=(interval + 120))
+child = pexpect.spawn(ping_command)
+child.timeout=1200
 
 while 1:
-    count += 1
     line = child.readline()
     if not line:
         break
@@ -39,10 +39,12 @@ while 1:
         write_to_file(log_file, 'Unknown host: ' + ping_destination)
         break
 
-    if count > 1:
+    if count > 0:
         ping_time = float(line[line.find('time=') + 5:line.find(' ms')])
         line = time.strftime("%m/%d/%Y %H:%M:%S") + ": " + str(ping_time)
-        print line
+        print str(count) + ": " + line
 
         if ping_time > threshold:
             write_to_file(log_file, line + '\n')
+
+    count += 1
