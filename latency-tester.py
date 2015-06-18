@@ -24,7 +24,7 @@ line = 'Ping Interval: ' + str(interval) + ', Destination: ' + ping_destination 
 write_to_file(log_file, line)
          
 ping_command = 'ping -i ' + str(interval) + ' ' + ping_destination
-print line
+print(line)
 
 child = pexpect.spawn(ping_command)
 child.timeout=1200
@@ -34,15 +34,15 @@ while 1:
     if not line:
         break
 
-    if line.startswith('ping: unknown host'):
-        print 'Unknown host: ' + ping_destination
+    if line.startswith(b'ping: unknown host'):
+        print('Unknown host: ' + ping_destination)
         write_to_file(log_file, 'Unknown host: ' + ping_destination)
         break
 
     if count > 0:
-        ping_time = float(line[line.find('time=') + 5:line.find(' ms')])
+        ping_time = float(line[line.find(b'time=') + 5:line.find(b' ms')])
         line = time.strftime("%m/%d/%Y %H:%M:%S") + ": " + str(ping_time)
-        print str(count) + ": " + line
+        print(str(count) + ": " + line)
 
         if ping_time > threshold:
             write_to_file(log_file, line + '\n')
