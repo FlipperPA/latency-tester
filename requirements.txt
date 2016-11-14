@@ -1,2 +1,2 @@
-pexpect==4.0.dev0
-ptyprocess==0.5
+pexpect==4.2.1
+ptyprocess==0.5.1
