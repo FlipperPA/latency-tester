@@ -1,11 +1,11 @@
-import sys, pexpect, time, datetime
+import os, sys, pexpect, time, datetime
 
 # SET YOUR PING INTERVAL HERE, IN SECONDS
 interval = 5
 
 # LOG TO WRITE TO WHEN PINGS TAKE LONGER THAN THE THRESHOLD SET ABOVE
 i = datetime.datetime.now()
-log_file = 'latency-tester.' + i.strftime('%Y.%m.%d.%H.%M.%S') + '.log'
+log_file = 'logs/latency-tester.' + i.strftime('%Y.%m.%d.%H.%M.%S') + '.log'
 
 # SET YOUR PING RESPONSE TIME THRESHOLD HERE, IN MILLISECONDS
 threshold = 250
@@ -14,6 +14,7 @@ threshold = 250
 ping_destination = 'www.google.com'
 
 def write_to_file(file_to_write, message):
+    os.makedirs(os.path.dirname(file_to_write), exist_ok=True)
     fh = open(file_to_write, 'a')
     fh.write(message)
     fh.close()
@@ -22,7 +23,7 @@ count = 0
 line = 'Ping Interval: ' + str(interval) + ', Destination: ' + ping_destination + ', Threshold to Log (msec): ' + str(threshold) + '\n'
 
 write_to_file(log_file, line)
-         
+
 ping_command = 'ping -i ' + str(interval) + ' ' + ping_destination
 print(line)
 
