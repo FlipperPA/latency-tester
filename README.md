@@ -14,9 +14,18 @@ $ pip install -r requirements.txt
 
 To run:
 
-python latency-tester.py
+$ python latency-tester.py
 
 Building Docker Container
 =========================
 
 $ docker build -t latency-tester .
+
+Running Docker Container
+========================
+
+$ docker run --name latency-tester latency-tester
+
+With log files mapped to host:
+
+$ docker run --name latency-tester -v <host_dir>:/root/logs/. latency-tester
