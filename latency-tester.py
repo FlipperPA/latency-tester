@@ -1,7 +1,7 @@
 import os, sys, pexpect, time, datetime
 
 # SET YOUR PING INTERVAL HERE, IN SECONDS
-interval = 5
+interval = 1
 
 # LOG TO WRITE TO WHEN PINGS TAKE LONGER THAN THE THRESHOLD SET ABOVE
 i = datetime.datetime.now()
@@ -23,19 +23,14 @@ def write_to_file(file_to_write, message):
 
 count = 0
 line = (
-    "Ping Interval: "
-    + str(interval)
-    + ", Destination: "
-    + ping_destination
-    + ", Threshold to Log (msec): "
-    + str(threshold)
-    + "\n"
+    f"Ping Interval: {interval}, Destination: {ping_destination}, Threshold to Log "
+    f"(msec): {threshold}"
 )
 
+print(line)
 write_to_file(log_file, line)
 
-ping_command = "ping -i " + str(interval) + " " + ping_destination
-print(line)
+ping_command = f"ping -i {interval} {ping_destination}"
 
 child = pexpect.spawn(ping_command)
 child.timeout = 1200
