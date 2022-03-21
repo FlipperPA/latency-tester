@@ -35,8 +35,14 @@ while True:
     latency = ping(DESTINATION)
 
     # Do we want to write it to the log?
-    write_log = "Yes" if latency > THRESHOLD else "No"
+    if latency is None or latency > THRESHOLD:
+        write_log = "Yes"
+    else:
+        write_log = "No"
+
     line = f"Pinged {DESTINATION}; latency: {latency} secs; logging: {write_log}"
     print(line)
-    write_to_file(log_file, line)
+
+    if write_log == "Yes":
+        write_to_file(log_file, line)
     sleep(INTERVAL)
