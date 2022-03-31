@@ -46,8 +46,8 @@ while True:
     else:
         latency_text = f"{latency} secs"
 
-    line = f"Pinged {DESTINATION}; latency: {latency_text}; logging: {write_log}"
-    print(line)
+    line = f"{datetime.datetime.now()}: pinged {DESTINATION}; latency: {latency_text}"
+    print(f"{line}; logging: {write_log}")
 
     if write_log == "Yes":
         write_to_file(log_file, line)
