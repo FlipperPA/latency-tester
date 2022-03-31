@@ -40,7 +40,13 @@ while True:
     else:
         write_log = "No"
 
-    line = f"Pinged {DESTINATION}; latency: {latency} secs; logging: {write_log}"
+    # Use better text is packet is dropped
+    if latency is None:
+        latency_text = "PACKET DROPPED"
+    else:
+        latency_text = f"{latency} secs"
+
+    line = f"Pinged {DESTINATION}; latency: {latency_text}; logging: {write_log}"
     print(line)
 
     if write_log == "Yes":
