@@ -35,7 +35,7 @@ while True:
     latency = ping(DESTINATION)
 
     # Do we want to write it to the log?
-    if latency is None or latency > THRESHOLD:
+    if latency is None or latency is False or latency > THRESHOLD:
         write_log = "Yes"
     else:
         write_log = "No"
@@ -43,6 +43,8 @@ while True:
     # Use better text is packet is dropped
     if latency is None:
         latency_text = "PACKET DROPPED"
+    elif latency is False:
+        latency_text = "NO CONNECTION"
     else:
         latency_text = f"{latency} secs"
 
