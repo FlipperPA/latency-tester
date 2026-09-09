@@ -3,6 +3,8 @@ import os
 from time import sleep
 
 from ping3 import ping
+from termcolor import colored
+
 
 # SET YOUR PING RESPONSE TIME THRESHOLD HERE, IN SECONDS
 THRESHOLD = 0.25  # 250 milliseconds is the Comcast SLA threshold.
@@ -37,8 +39,10 @@ while True:
     # Do we want to write it to the log?
     if latency is None or latency > THRESHOLD:
         write_log = "Yes"
+        color = "red"
     else:
         write_log = "No"
+        color = "green"
 
     # Use better text is packet is dropped
     if latency is None:
@@ -47,7 +51,7 @@ while True:
         latency_text = f"{latency} secs"
 
     line = f"{datetime.datetime.now()}: pinged {DESTINATION}; latency: {latency_text}"
-    print(f"{line}; logging: {write_log}")
+    print(colored(f"{line}; logging: {write_log}", color))
 
     if write_log == "Yes":
         write_to_file(log_file, line)
