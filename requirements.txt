@@ -1,2 +1,2 @@
-ping3==2.6.6
+ping3==4.0.4
 termcolor==3.3.0
